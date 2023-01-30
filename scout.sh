@@ -23,11 +23,12 @@ Made with bash by Sahil <3
 
 echo -ne "${BLUE}[+] Hello fellow hackers ${ENDCOLOR}\n"
 echo -ne "${BLUE}[+] Specify the programming language
+
 1. ASP.Net
 2. SpringBoot
 3. Quit
 
-(Enter 1 for ASP.Net and 2 for SpringBoot)\n"
+(Enter 1 for ASP.Net and 2 for SpringBoot and 3 to Quit)\n"
 
 read language
 
@@ -39,6 +40,7 @@ then
 	sort -u jsonFile.txt >> sortedJSON.txt;
 	cat sortedJSON.txt| while read filename; do echo $filename;cat $filename | grep -in 'password\|secret\|token\|sessionid\|session_id\|apikey\|api_key\|session_key\|sessionkey';echo done;done |tee -a output/JSONoutput.txt
 	# ---password,secret, token,sessionid, session_id,apikey,api_key,sessionkey,session_key in json
+	
 	#.config
 	find . -name \*.config -type f | while read line; do echo "$line" | tee -a configFile.txt;done 
 	sort -u configFile.txt >> sortedConfig.txt  
@@ -52,6 +54,8 @@ then
 	find . -name \*.cs -type f | while read line; do echo "$line" | tee -a csFile.txt;done
 	sort -u csFile.txt >> SortedCSFile.txt
 	cat SortedCSFile.txt| while read filename; do echo $filename;cat $filename |grep -in 'x-xss-protection\|x-frame-options\|x-content\|strict-transport-policy\|content-security-policy\|referrer-policy\|x-aspnet-version\|x-powered-by\|hsts\|cookie.httponly\|cookie.secure\|cookie.samesite\|logging\.\|corsbuilder';echo done;done | tee -a output/CSOutput.txt
+
+
 elif [ $language -eq 2 ]
 then
 	echo -ne "${YELLOW} Still in progress......"
