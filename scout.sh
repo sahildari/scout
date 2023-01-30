@@ -29,17 +29,24 @@ then
 	#.config
 	find . -name \*.config -type f | while read line; do echo "$line" | tee -a configFile.txt;done 
 	sort -u configFile.txt >> sortedConfig.txt  
-	cat sortedConfig.txt | while read filename; do echo $filename;cat $filename |grep -in 'x-xss-protection\|x-frame-options\|x-content\|strict-transport-policy\|content-security-policy\|referrer-policy\|debug\|put\|trace' | grep -iv '<\!--'; echo done;done | tee -a output/headers.txt
+	cat sortedConfig.txt | while read filename; do echo $filename;cat $filename |grep -in 'x-xss-protection\|x-frame-options\|x-content\|strict-transport-policy\|content-security-policy\|referrer-policy\|x-aspnet-version\|x-powered-by\|server\|debug\|put\|trace' | grep -iv '<\!--'; echo done;done | tee -a output/configOutput.txt
+
+	#.cs hsts, cookie.httponly, cookie.secure,cookie.samesite, 'x-xss-protection\|x-frame-options\|x-content\|strict-transport-policy\|content-security-policy\|referrer-policy\|x-aspnet-version\|x-powered-by'
+	# corsbuilder - cors headers
+	# key
+	# logging
+	# ---
+	find . -name \*.cs -type f | while read line; do echo "$line" | tee -a csFile.txt;done
+	sort -u csFile.txt >> SortedCSFile.txt
+	cat SortedCSFile.txt| while read filename; do echo $filename;cat $filename |grep -in 'x-xss-protection\|x-frame-options\|x-content\|strict-transport-policy\|content-security-policy\|referrer-policy\|x-aspnet-version\|x-powered-by\|hsts\|cookie.httponly\|cookie.secure\|cookie.samesite\|logging\.\|corsbuilder';echo done;done | tee -a output/CSOutput.txt
 	clear
 	echo -ne "${GREEN} [+] The sensitive data in the JSON files have been written to JSONoutput.txt ${ENDCOLOR}\n"
-	echo -ne "${GREEN} [+] The sensitive data in the config files have been written to configOutput.txt ${ENDCOLOR}\n"
-	echo -ne "${CYAN}Headers present in the config files:\n";cat output/headers.txt | grep -in 'x-xss-protection\|x-frame-options\|x-content\|strict-transport-policy\|content-security-policy\|referrer-policy'
-	#.cs
- 
+	echo -ne "${YELLOW} [+] The sensitive data in the config files have been written to configOutput.txt ${ENDCOLOR}\n"
+	echo -ne "${CYAN} [+] Headers present in the config files:\n";cat output/configOutput.txt | grep -i 'x-xss-protection\|x-frame-options\|x-content\|strict-transport-policy\|content-security-policy\|referrer-policy\|x-aspnet-version\|x-powered-by\|server'
+	echo -ne "${GREEN} [+] The Logging level is as follows:\n"
+	cat output/CSOutput.txt | grep logging | grep -iv '\\'
 	# springboot
 	#.java
 	#.xml
 	#.java
 fi
-
- 
